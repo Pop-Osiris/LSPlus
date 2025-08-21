@@ -1,6 +1,6 @@
 # LS Plus
 
-A WIP QOL mod to speed up and add convenience to certain aspects of gaming on a certain server.
+A WIP Client-Side QOL mod to speed up and add convenience to certain aspects of gaming on a certain server.
 
 
 ## Current Features
