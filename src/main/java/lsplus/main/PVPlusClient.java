@@ -72,18 +72,7 @@ public class PVPlusClient implements ClientModInitializer {
 
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(literal("pillagerleadermessage")
-                    .executes(context -> {
-                        doPillagerMessage = !doPillagerMessage;
-                        if (doPillagerMessage) {
-                            context.getSource().sendFeedback(Text.literal(LSPPrefix + "You will now announce when a pillager leader has spawned."));
-                            doDimensionCheck = true;
-                        } else {
-                            context.getSource().sendFeedback(Text.literal(LSPPrefix + "You will no longer announce when a pillager leader has spawned."));
-                            doDimensionCheck = false;
-                        }
-                        return 1;
-            }));
+
 
             dispatcher.register(literal("autoraffle")
                     .executes(context -> {
@@ -134,35 +123,6 @@ public class PVPlusClient implements ClientModInitializer {
 
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
             String chatMessage = message.getString();
-            if (doPillagerMessage) {
-                if (chatMessage.equals("[ᴍᴏʙꜱ] • The Dark Pillager Leader has risen!")) {
-                    System.out.println("Received chat message: " + chatMessage);
-                    assert client.player != null;
-                    alertMessage++;
-
-                    // IM SOSOSOSOS SORRY IF ANYONE READS THE SOURCE CODE AND FINDS THIS OMG THIS IS SOME SLOP YANDERE DEV CODE I KNOW PLEASE DONT TELL ME
-
-                    if (alertMessage == 1) {
-                        client.getNetworkHandler().sendChatMessage("[BossAlert] a pillager leader spawned if someone wants to come kill it :3");
-                    }
-                    if (alertMessage == 2) {
-                        client.getNetworkHandler().sendChatMessage("[BossAlert] Wow a think I see a certain boss over here...");
-                    }
-                    if (alertMessage == 3) {
-                        client.getNetworkHandler().sendChatMessage("[BossAlert] bro im so sick of these pillager leaders that keep showing up, can someone kill it for me?");
-                    }
-                    if (alertMessage == 4) {
-                        client.getNetworkHandler().sendChatMessage("[BossAlert] theres a free ominous banner somewhere in deep dark rn!");
-                    }
-                    if (alertMessage == 5) {
-                        client.getNetworkHandler().sendChatMessage("[BossAlert] theres this pillager leader guy in the deep dark dimension someone has to kill");
-                    }
-                    if (alertMessage >= 6) {
-                        client.getNetworkHandler().sendChatMessage("[BossAlert] theres a pillager leader here come kill this guy bruh");
-                        alertMessage = 0;
-                    }
-                }
-            }
 
             if (doAutoRaffle) {
                 if (chatMessage.contains("\uD83C\uDFAB A RAFFLE HAS STARTED! \uD83C\uDFAB")) {
