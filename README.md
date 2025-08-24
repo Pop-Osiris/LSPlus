@@ -8,7 +8,9 @@ A WIP Client-Side QOL mod to speed up and add convenience to certain aspects of 
 The main feature of this mod currently is the custom PV browser menu.
 Default Hotkey is N, but you can change the hotkey to anything you like in settings.
 
-Currently you need to manually open each PV once so the mod can save the contents of them locally. You only need to do this once, after that it should save automatically whenever changes are made and through restarts.
+On first install you must sync your pvs to the mod by clicking the Sync button in the Custom PV menu, or by running /sync-pvs.
+The menu saves automatically whenever changes are made to your player vaults.
+
 ### Automatically Enter Raffles
 (On by Default) Command /autoraffle enables automatically entering raffles whenever they start. Helpful for those cheeky one second raffles and potentially winning something while afking.
 
