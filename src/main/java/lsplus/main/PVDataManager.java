@@ -12,6 +12,8 @@ public class PVDataManager {
     static HashMap<String, List<ItemStack>> savedPlayerVaults = new HashMap<>();
 
     private static final File PVS_FILE = new File("player_vaults.nbt");
+    public static boolean firstTimeInitialize;
+
 
     public static NbtCompound serializePVS() {
         MinecraftClient client = MinecraftClient.getInstance();
@@ -55,6 +57,7 @@ public class PVDataManager {
 
         if (!PVS_FILE.exists()) {
             System.out.println("Vaults file does not exist, starting with empty vaults.");
+            firstTimeInitialize = true;
             return loadedData;
         }
 
@@ -99,7 +102,7 @@ public class PVDataManager {
             try (FileOutputStream fos = new FileOutputStream(PVS_FILE);
                  DataOutputStream dos = new DataOutputStream(fos)) {
                 net.minecraft.nbt.NbtIo.writeCompressed(nbtData, dos);
-                System.out.println("PV data saved to " + PVS_FILE.getName());
+                //System.out.println("PV data saved to " + PVS_FILE.getName());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -110,7 +113,7 @@ public class PVDataManager {
 
     public static void loadPVData() {
         savedPlayerVaults = (HashMap<String, List<ItemStack>>) deserializePVS();
-        System.out.println("Vault data loaded. Total Amount of PVs : " + savedPlayerVaults.size());
+        //System.out.println("Vault data loaded. Total Amount of PVs : " + savedPlayerVaults.size());
     }
 
     public static void initializePVsForStartup() {

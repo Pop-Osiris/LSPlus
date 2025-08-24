@@ -1,13 +1,14 @@
 {
 	"schemaVersion": 1,
 	"id": "lsplus",
-	"version": "0.1.5",
+	"version": "0.1.51",
 	"name": "LSPlus",
 	"description": "A Client Side addon mod that adds QOL features and more",
 	"authors": [
 		"Poptrick"
 	],
 	"contact": {
+      "homepage": "https://github.com/Pop-Osiris/LSPlus",
 		"sources": "https://github.com/Pop-Osiris/LSPlus"
 	},
 	"license": "CC0-1.0",

@@ -38,7 +38,8 @@ public class HandledScreenCloseMixin {
                         currentContainerContents.add(stack);
 
                 }
-                System.out.println("Storage: " + inventoryName + " Contents List: " + currentContainerContents);
+                System.out.println("PV Successfully Saved: " + inventoryName);
+                // System.out.println("PV Saved: " + inventoryName + " Contents List: " + currentContainerContents);
                 PVDataManager.savePlayerVaultContents(inventoryName, currentContainerContents);
                 PVDataManager.savePVData();
                 // System.out.println("chest contents saved with size " + chestContents.size());

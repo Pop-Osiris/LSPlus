@@ -51,6 +51,9 @@ public class PVSelectionScreenRenderer {
         this.totalContentHeight = this.vaultRows.size() * this.entryHeight;
     }
 
+    public void emptyPVMenu() {
+
+    }
 
     private List<List<Integer>> groupVaultsIntoRows(HashMap<String, List<ItemStack>> map) {
         List<Integer> vaultNumbers = new ArrayList<>();

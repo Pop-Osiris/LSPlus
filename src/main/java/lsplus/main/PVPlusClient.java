@@ -15,7 +15,7 @@ import org.lwjgl.glfw.GLFW;
 import static lsplus.main.PVDataManager.savedPlayerVaults;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 
-import static lsplus.main.DimensionCheck.checkDimension;
+import static lsplus.main.util.DimensionCheck.checkDimension;
 
 
 public class PVPlusClient implements ClientModInitializer {
@@ -36,7 +36,7 @@ public class PVPlusClient implements ClientModInitializer {
     private static int alertMessage = 0;
 
     public static boolean doPillagerMessage = false;
-    public static boolean doDimensionCheck = false;
+    //public static boolean doDimensionCheck = false;
     public static boolean doAutoRaffle = true;
 
 
@@ -48,9 +48,9 @@ public class PVPlusClient implements ClientModInitializer {
         // PV Data handler
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             shouldLoadVaults = true;
-            System.out.println("Set flag to load vault data on next client ticks.");
+            //System.out.println("Set flag to load vault data on next client ticks.");
             if (client != null && client.world != null) {
-                System.out.println("PV Data Initializing..");
+                //System.out.println("PV Data Initializing..");
                 PVDataManager.initializePVsForStartup();
             }
             // else {
@@ -62,7 +62,7 @@ public class PVPlusClient implements ClientModInitializer {
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             if (client != null && client.world != null) {
                 PVDataManager.savePVsForShutdown();
-                System.out.println("Saved vault data on disconnecting from server.");
+                //System.out.println("Saved vault data on disconnecting from server.");
                 shouldLoadVaults = false; // reset on disconnect to prevent accidental loads bro im crashingggg
             } else {
                 System.err.println("Attempted to save vault data on disconnect, but client or world was null.");
@@ -72,8 +72,6 @@ public class PVPlusClient implements ClientModInitializer {
 
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-
-
             dispatcher.register(literal("autoraffle")
                     .executes(context -> {
                         doAutoRaffle = !doAutoRaffle;
@@ -85,21 +83,21 @@ public class PVPlusClient implements ClientModInitializer {
                         return 1;
                     }));
 
-
-//            dispatcher.register(literal("savetest")
-//                    .executes(context -> {
-//                        PVDataManager.savePVData();
-//                        return 1;
-//                    }));
+            dispatcher.register(literal("sync-pvs")
+                    .executes(context -> {
+                        //context.getSource().sendFeedback(Text.literal(LSPPrefix + "Sit tight while we sync data. This process only takes a minute, and is critical for the mod's functionality when using the mod for the first time."));
+                        new SynchronizePVs().startPVSyncing();
+                        return 1;
+                    }));
         });
 
 
          ClientTickEvents.END_CLIENT_TICK.register(client -> {
              // PV Data handler
              if (shouldLoadVaults && client != null && client.world != null) {
-                 System.out.println("PV Data Initializing..");
+                 //System.out.println("PV Data Initializing..");
                  PVDataManager.initializePVsForStartup();
-                 System.out.println("Loaded PV data");
+                 //System.out.println("Loaded PV data");
                  shouldLoadVaults = false;
              }
 
@@ -109,14 +107,14 @@ public class PVPlusClient implements ClientModInitializer {
                  MinecraftClient.getInstance().setScreen(new PVSelectionScreen(savedPlayerVaults));
              }
 
-             if (doDimensionCheck) {
-                 tickCounter++;
-                 if (tickCounter >= 20) {
-                     tickCounter = 0;
-                     // update this and the function so it can be used in if statement here
-                     checkDimension("afk", "deepdark");
-                 }
-             }
+//             if (doDimensionCheck) {
+//                 tickCounter++;
+//                 if (tickCounter >= 20) {
+//                     tickCounter = 0;
+//                     // update this and the function so it can be used in if statement here
+//                     checkDimension("afk", "deepdark");
+//                 }
+//             }
          });
 
         MinecraftClient client = MinecraftClient.getInstance();

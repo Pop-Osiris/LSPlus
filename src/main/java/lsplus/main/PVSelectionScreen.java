@@ -1,20 +1,28 @@
 package lsplus.main;
 
+import lsplus.main.util.ClickableTextWidget;
+import lsplus.main.SynchronizePVs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-
 import java.util.HashMap;
 import java.util.List;
+
+
+
+import static lsplus.main.PVDataManager.firstTimeInitialize;
+import static lsplus.main.PVDataManager.savedPlayerVaults;
 
 public class PVSelectionScreen extends Screen {
 
     private final HashMap<String, List<ItemStack>> itemMap;
     private PVSelectionScreenRenderer vaultsRenderer;
     private TextFieldWidget searchBox;
-
+    private ClickableWidget firstInstallPage;
 
     public PVSelectionScreen(HashMap<String, List<ItemStack>> itemMap) {
         super(Text.of("Player Vaults"));
@@ -32,7 +40,36 @@ public class PVSelectionScreen extends Screen {
         int listWidth = this.width;
         int listHeight = this.height - 32; // little bit of room on bottom cause it may be annoying
 
-        this.vaultsRenderer = new PVSelectionScreenRenderer(this.client, this.itemMap, listX, listY, listWidth, listHeight);
+        if (this.client != null) {
+            this.vaultsRenderer = new PVSelectionScreenRenderer(this.client, this.itemMap, listX, listY, listWidth, listHeight);
+        }
+
+        //System.out.println(this.itemMap);
+        //System.out.println(firstTimeInitialize);
+        if (this.itemMap.isEmpty()) {
+
+            //System.out.println("First Time Initialize should start");
+
+            // add a new clickable text for first time initialization/empty menu shit
+            int textX = 0;
+            int textY = this.height / 2 - 10;
+            int textWidth = this.width;
+            int textHeight = 20;
+
+            Text initializationText = Text.of("hmm.. it seems to be a bit empty here. Click here to sync PVs!");
+            int textColor = 0xFFFFFF;
+
+            // create runnable action for when clicked
+            Runnable initializeAction = () -> {
+                //System.out.println("Player Vaults Initialized!");
+                new SynchronizePVs().startPVSyncing();
+                firstTimeInitialize = false;
+                this.close();
+            };
+
+            ClickableTextWidget initializeButton = new ClickableTextWidget(textX, textY, textWidth, textHeight, initializationText, textColor, () -> initializeAction);
+            this.addDrawableChild(initializeButton);
+        }
 
 
         // constructor for search bar
@@ -51,6 +88,7 @@ public class PVSelectionScreen extends Screen {
         this.searchBox.setChangedListener(this::onSearchQueryChanged);
 
         this.addDrawableChild(this.searchBox);
+
     }
 
     private void onSearchQueryChanged(String query) {
@@ -68,6 +106,7 @@ public class PVSelectionScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+
         if (this.searchBox.mouseClicked(mouseX, mouseY, button)) {
             this.setFocused(this.searchBox); // set search box as focused
             return true;
@@ -90,6 +129,7 @@ public class PVSelectionScreen extends Screen {
 
     @Override
     public boolean charTyped(char chr, int modifiers) {
+
         if (this.searchBox.charTyped(chr, modifiers)) {
             return true;
         }
